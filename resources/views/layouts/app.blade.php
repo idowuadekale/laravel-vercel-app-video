@@ -13,19 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-
-    {{-- Add these lines instead --}}
-    @if (app()->environment('production'))
-        <style>
-            {!! Vite::content('resources/css/app.css') !!}
-        </style>
-        <script>
-            {!! Vite::content('resources/js/app.js') !!}
-        </script>
-    @else
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans antialiased">
