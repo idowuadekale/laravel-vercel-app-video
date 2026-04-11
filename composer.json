@@ -46,11 +46,6 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-          "vercel": [       
-            "@php artisan migrate --force",        
-            "npm install",        
-            "npm run build"
         ]
     },
     "extra": {
