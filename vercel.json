@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
   "outputDirectory": "public",
   "functions": {
     "api/lambda.php": {
@@ -10,10 +11,6 @@
     {
       "src": "/build/(.*)",
       "dest": "/public/build/$1"
-    },
-    {
-      "src": "/(css|js|images|assets)/(.*)",
-      "dest": "/public/$1/$2"
     },
     {
       "src": "/(.*)",
