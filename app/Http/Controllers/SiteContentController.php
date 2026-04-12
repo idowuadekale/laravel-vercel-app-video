@@ -8,6 +8,7 @@ use App\Models\LandingPage;
 use App\Models\SocialMedia;
 use App\Models\Team;
 use App\Services\AuditService;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -470,40 +471,24 @@ class SiteContentController extends Controller
 
     public function storeHeroImage(Request $request)
     {
-        $data = $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:20480', // 20mb
+        $request->validate([
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
 
-        $data['updated_by'] = Auth::id();
         $file = $request->file('image');
-        $path = 'imageUpload/'.uniqid().'.jpg';
 
-        // Compress if > 5MB
-        if ($file->getSize() > 5 * 1024 * 1024) {
-            $imgResource = null;
+        // Upload to Cloudinary (handles compression automatically)
+        $uploaded = Cloudinary::upload($file->getRealPath(), [
+            'folder' => 'imageUpload',
+            'quality' => 'auto',
+            'fetch_format' => 'auto',
+        ]);
 
-            if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                $imgResource = imagecreatefromjpeg($file->getRealPath());
-                imagejpeg($imgResource, storage_path('app/public/'.$path), 75);
-            }
+        $image = HeroImage::create([
+            'image' => $uploaded->getSecurePath(), // stores full https:// URL
+            'updated_by' => Auth::id(),
+        ]);
 
-            if ($file->extension() === 'png') {
-                $imgResource = imagecreatefrompng($file->getRealPath());
-                imagepng($imgResource, storage_path('app/public/'.$path), 6);
-            }
-
-            if ($imgResource) {
-                imagedestroy($imgResource);
-            }
-        } else {
-            $path = $file->store('imageUpload', 'public');
-        }
-
-        $data['image'] = $path;
-
-        $image = HeroImage::create($data);
-
-        // AUDIT TRAIL — CREATED
         AuditService::log('created', $image, [
             'created_fields' => $image->toArray(),
         ]);
