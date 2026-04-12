@@ -1,132 +1,1283 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.default')
+@section('style')
+    <style>
+        .modal.anouncement {
+            border-radius: 7px;
+            overflow: hidden;
+            background-color: transparent;
+        }
 
-        <title>Laravel</title>
+        .modal.anouncement a {
+            color: #fff;
+        }
 
-        <!-- Fonts -->
-        <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+        .modal.anouncement .modal-content {
+            background-color: transparent;
+            border: none;
+            border-radius: 7px;
+        }
 
-        <!-- Styles -->
-        <style>
-            /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}a{background-color:transparent}[hidden]{display:none}html{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}*,:after,:before{box-sizing:border-box;border:0 solid #e2e8f0}a{color:inherit;text-decoration:inherit}svg,video{display:block;vertical-align:middle}video{max-width:100%;height:auto}.bg-white{--tw-bg-opacity: 1;background-color:rgb(255 255 255 / var(--tw-bg-opacity))}.bg-gray-100{--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity))}.border-gray-200{--tw-border-opacity: 1;border-color:rgb(229 231 235 / var(--tw-border-opacity))}.border-t{border-top-width:1px}.flex{display:flex}.grid{display:grid}.hidden{display:none}.items-center{align-items:center}.justify-center{justify-content:center}.font-semibold{font-weight:600}.h-5{height:1.25rem}.h-8{height:2rem}.h-16{height:4rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.leading-7{line-height:1.75rem}.mx-auto{margin-left:auto;margin-right:auto}.ml-1{margin-left:.25rem}.mt-2{margin-top:.5rem}.mr-2{margin-right:.5rem}.ml-2{margin-left:.5rem}.mt-4{margin-top:1rem}.ml-4{margin-left:1rem}.mt-8{margin-top:2rem}.ml-12{margin-left:3rem}.-mt-px{margin-top:-1px}.max-w-6xl{max-width:72rem}.min-h-screen{min-height:100vh}.overflow-hidden{overflow:hidden}.p-6{padding:1.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.pt-8{padding-top:2rem}.fixed{position:fixed}.relative{position:relative}.top-0{top:0}.right-0{right:0}.shadow{--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}.text-center{text-align:center}.text-gray-200{--tw-text-opacity: 1;color:rgb(229 231 235 / var(--tw-text-opacity))}.text-gray-300{--tw-text-opacity: 1;color:rgb(209 213 219 / var(--tw-text-opacity))}.text-gray-400{--tw-text-opacity: 1;color:rgb(156 163 175 / var(--tw-text-opacity))}.text-gray-500{--tw-text-opacity: 1;color:rgb(107 114 128 / var(--tw-text-opacity))}.text-gray-600{--tw-text-opacity: 1;color:rgb(75 85 99 / var(--tw-text-opacity))}.text-gray-700{--tw-text-opacity: 1;color:rgb(55 65 81 / var(--tw-text-opacity))}.text-gray-900{--tw-text-opacity: 1;color:rgb(17 24 39 / var(--tw-text-opacity))}.underline{text-decoration:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.w-5{width:1.25rem}.w-8{width:2rem}.w-auto{width:auto}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.sm\:rounded-lg{border-radius:.5rem}.sm\:block{display:block}.sm\:items-center{align-items:center}.sm\:justify-start{justify-content:flex-start}.sm\:justify-between{justify-content:space-between}.sm\:h-20{height:5rem}.sm\:ml-0{margin-left:0}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pt-0{padding-top:0}.sm\:text-left{text-align:left}.sm\:text-right{text-align:right}}@media (min-width:768px){.md\:border-t-0{border-top-width:0}.md\:border-l{border-left-width:1px}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (min-width:1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}@media (prefers-color-scheme:dark){.dark\:bg-gray-800{--tw-bg-opacity: 1;background-color:rgb(31 41 55 / var(--tw-bg-opacity))}.dark\:bg-gray-900{--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity))}.dark\:border-gray-700{--tw-border-opacity: 1;border-color:rgb(55 65 81 / var(--tw-border-opacity))}.dark\:text-white{--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.dark\:text-gray-400{--tw-text-opacity: 1;color:rgb(156 163 175 / var(--tw-text-opacity))}.dark\:text-gray-500{--tw-text-opacity: 1;color:rgb(107 114 128 / var(--tw-text-opacity))}}
-        </style>
+        .modal.anouncement .modal-content .modal-body {
+            border-radius: 7px;
+            overflow: hidden;
+            color: #fff;
+            padding-left: 0px;
+            padding-right: 0px;
+            -webkit-box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 10px 50px -10px rgba(0, 0, 0, 0.9);
+        }
 
-        <style>
-            body {
-                font-family: 'Nunito', sans-serif;
-            }
-        </style>
-    </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+        .modal.anouncement .modal-content .modal-body.overlayl {
+            position: relative;
+        }
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+        .modal.anouncement .modal-content .modal-body.overlayl:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
-                        <g clip-path="url(#clip0)" fill="#EF3B2D">
-                            <path d="M248.032 44.676h-16.466v100.23h47.394v-14.748h-30.928V44.676zM337.091 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.431 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162-.001 2.863-.479 5.584-1.432 8.161zM463.954 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.432 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162 0 2.863-.479 5.584-1.432 8.161zM650.772 44.676h-15.606v100.23h15.606V44.676zM365.013 144.906h15.607V93.538h26.776V78.182h-42.383v66.724zM542.133 78.182l-19.616 51.096-19.616-51.096h-15.808l25.617 66.724h19.614l25.617-66.724h-15.808zM591.98 76.466c-19.112 0-34.239 15.706-34.239 35.079 0 21.416 14.641 35.079 36.239 35.079 12.088 0 19.806-4.622 29.234-14.688l-10.544-8.158c-.006.008-7.958 10.449-19.832 10.449-13.802 0-19.612-11.127-19.612-16.884h51.777c2.72-22.043-11.772-40.877-33.023-40.877zm-18.713 29.28c.12-1.284 1.917-16.884 18.589-16.884 16.671 0 18.697 15.598 18.813 16.884h-37.402zM184.068 43.892c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002-35.648-20.524a2.971 2.971 0 00-2.964 0l-35.647 20.522-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v38.979l-29.706 17.103V24.493a3 3 0 00-.103-.776c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002L40.098 1.396a2.971 2.971 0 00-2.964 0L1.487 21.919l-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v122.09c0 1.063.568 2.044 1.489 2.575l71.293 41.045c.156.089.324.143.49.202.078.028.15.074.23.095a2.98 2.98 0 001.524 0c.069-.018.132-.059.2-.083.176-.061.354-.119.519-.214l71.293-41.045a2.971 2.971 0 001.489-2.575v-38.979l34.158-19.666a2.971 2.971 0 001.489-2.575V44.666a3.075 3.075 0 00-.106-.774zM74.255 143.167l-29.648-16.779 31.136-17.926.001-.001 34.164-19.669 29.674 17.084-21.772 12.428-43.555 24.863zm68.329-76.259v33.841l-12.475-7.182-17.231-9.92V49.806l12.475 7.182 17.231 9.92zm2.97-39.335l29.693 17.095-29.693 17.095-29.693-17.095 29.693-17.095zM54.06 114.089l-12.475 7.182V46.733l17.231-9.92 12.475-7.182v74.537l-17.231 9.921zM38.614 7.398l29.693 17.095-29.693 17.095L8.921 24.493 38.614 7.398zM5.938 29.632l12.475 7.182 17.231 9.92v79.676l.001.005-.001.006c0 .114.032.221.045.333.017.146.021.294.059.434l.002.007c.032.117.094.222.14.334.051.124.088.255.156.371a.036.036 0 00.004.009c.061.105.149.191.222.288.081.105.149.22.244.314l.008.01c.084.083.19.142.284.215.106.083.202.178.32.247l.013.005.011.008 34.139 19.321v34.175L5.939 144.867V29.632h-.001zm136.646 115.235l-65.352 37.625V148.31l48.399-27.628 16.953-9.677v33.862zm35.646-61.22l-29.706 17.102V66.908l17.231-9.92 12.475-7.182v33.841z"/>
-                        </g>
-                    </svg>
-                </div>
+        .modal.anouncement .modal-content .modal-body.overlayl .to-front {
+            z-index: 2;
+            position: relative;
+        }
 
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <div class="p-6">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel.com/docs" class="underline text-gray-900 dark:text-white">Documentation</a></div>
-                            </div>
+        .modal.anouncement .modal-content .modal-body h2 {
+            font-size: 18px;
+        }
 
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel has wonderful, thorough documentation covering every aspect of the framework. Whether you are new to the framework or have previous experience with Laravel, we recommend reading all of the documentation from beginning to end.
+        .modal.anouncement .modal-content .modal-body p {
+            color: #fff;
+        }
+
+        .modal.anouncement .modal-content .modal-body h3 {
+            color: #fff;
+            font-size: 22px;
+        }
+
+        .modal.anouncement .modal-content .modal-body .line {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.62);
+            padding-bottom: 10px;
+        }
+
+        .modal.anouncement .cancel a {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .modal .anouncement .cancel a:hover {
+            color: #fff;
+        }
+
+        .btn {
+            border-radius: 4px;
+            border: none;
+        }
+
+        .btn:active,
+        .btn:focus {
+            outline: none;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+        }
+
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Carousel icon controls */
+        #announcementModal .carousel-control-prev,
+        #announcementModal .carousel-control-next {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        #announcementModal .carousel-control-prev:hover,
+        #announcementModal .carousel-control-next:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        #announcementModal .carousel-control-prev i,
+        #announcementModal .carousel-control-next i {
+            color: #fff;
+            font-size: 20px;
+            pointer-events: none;
+            /* Ensures click goes to button */
+        }
+    </style>
+@endsection
+@section('content')
+    <!--? slider Area Start-->
+    <div class="slider-area position-relative">
+        <div class="slider-active">
+            <!-- Single Slider -->
+            <div class="single-slider slider-height d-flex align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-8 col-md-10 col-sm-10">
+                            <div class="hero__caption">
+                                <span data-animation="fadeInLeft" data-delay=".1s">
+                                    {{ $landing?->welcome_heading ?: 'Your Journey with God Starts Here – Join Us!' }}
+                                </span>
+                                <h1 data-animation="fadeInLeft" data-delay=".5s">
+                                    {{ $landing?->welcome_bio ?: 'More Than a Church. A Family. A Calling.' }}
+                                </h1>
+                                <!-- Hero-btn -->
+                                <div class="slider-btns">
+                                    <!-- Social Icons -->
+                                    <div class="social-icons-wrapper" data-animation="fadeInUp" data-delay="1.2s">
+                                        <!-- <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="social-icon whatsapp">
+                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="fab fa-whatsapp"></i>
+                                                                                                                                                                                                                                                                                                                                                                                                                            </a> -->
+                                        @if ($social?->twitter)
+                                            <a href="{{ $social?->twitter ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon facebook">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->facebook)
+                                            <a href="{{ $social?->facebook ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon facebook">
+                                                <i class="fab fa-facebook"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->instagram)
+                                            <a href="{{ $social?->instagram ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon instagram">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->linkedin)
+                                            <a href="{{ $social?->linkedin ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon linkedin">
+                                                <i class="fab fa-linkedin"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->youtube)
+                                            <a href="{{ $social?->youtube ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon youtube">
+                                                <i class="fab fa-youtube"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->tiktok)
+                                            <a href="{{ $social?->tiktok ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon tiktok">
+                                                <i class="fab fa-tiktok"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    @if ($social?->video_link)
+                                        <a data-animation="fadeInRight" data-delay="1.0s" class="popup-video video-btn"
+                                            href="{{ $social?->video_link ?: 'https://www.youtube.com/watch?v=CvYr4aFNHzM' }}">
+                                            <i class="fas fa-play"></i>
+                                        </a>
+                                        <p class="video-cap d-nonell d-sm-blcok" data-animation="fadeInRight"
+                                            data-delay="1.0s">
+                                            Watch <br> Video
+                                        </p>
+                                    @endif
+                                    <!-- <a data-animation="fadeInLeft" data-delay="1.0s" href="industries.html"
+                                                                                                                                                                                                                                                                                                                                                                                                                            class="btn hero-btn rounded">Join Us
+                                                                                                                                                                                                                                                                                                                                                                                                                        </a> -->
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laracasts.com" class="underline text-gray-900 dark:text-white">Laracasts</a></div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel-news.com/" class="underline text-gray-900 dark:text-white">Laravel News</a></div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M6.115 5.19l.319 1.913A6 6 0 008.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 002.288-4.042 1.087 1.087 0 00-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 01-.98-.314l-.295-.295a1.125 1.125 0 010-1.591l.13-.132a1.125 1.125 0 011.3-.21l.603.302a.809.809 0 001.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 001.528-1.732l.146-.292M6.115 5.19A9 9 0 1017.18 4.64M6.115 5.19A8.965 8.965 0 0112 3c1.929 0 3.716.607 5.18 1.64" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">Vibrant Ecosystem</div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel's robust library of first-party tools and libraries, such as <a href="https://forge.laravel.com" class="underline">Forge</a>, <a href="https://vapor.laravel.com" class="underline">Vapor</a>, <a href="https://nova.laravel.com" class="underline">Nova</a>, and <a href="https://envoyer.io" class="underline">Envoyer</a> help you take your projects to the next level. Pair them with powerful open source libraries like <a href="https://laravel.com/docs/billing" class="underline">Cashier</a>, <a href="https://laravel.com/docs/dusk" class="underline">Dusk</a>, <a href="https://laravel.com/docs/broadcasting" class="underline">Echo</a>, <a href="https://laravel.com/docs/horizon" class="underline">Horizon</a>, <a href="https://laravel.com/docs/sanctum" class="underline">Sanctum</a>, <a href="https://laravel.com/docs/telescope" class="underline">Telescope</a>, and more.
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
-                    <div class="text-center text-sm text-gray-500 sm:text-left">
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                            </svg>
-
-                            <a href="https://laravel.bigcartel.com" class="ml-1 underline">
-                                Shop
-                            </a>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-4 -mt-px w-5 h-5 text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                            </svg>
-
-                            <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
-                                Sponsor
-                            </a>
+            </div>
+            <!-- Single Slider -->
+            <div class="single-slider slider-height d-flex align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-8 col-md-10 col-sm-10">
+                            <div class="hero__caption">
+                                <span data-animation="fadeInLeft" data-delay=".1s">
+                                    No Perfect People Allowed. Just Real Faith.
+                                </span>
+                                <h1 data-animation="fadeInLeft" data-delay=".5s">
+                                    Where Hearts Grow in Faith & Friendship.
+                                </h1>
+                                <!-- Hero-btn -->
+                                <div class="slider-btns">
+                                    <!-- Social Icons -->
+                                    <div class="social-icons-wrapper" data-animation="fadeInUp" data-delay="1.2s">
+                                        @if ($social?->twitter)
+                                            <a href="{{ $social?->twitter ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon facebook">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->facebook)
+                                            <a href="{{ $social?->facebook ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon facebook">
+                                                <i class="fab fa-facebook"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->instagram)
+                                            <a href="{{ $social?->instagram ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon instagram">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->linkedin)
+                                            <a href="{{ $social?->linkedin ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon linkedin">
+                                                <i class="fab fa-linkedin"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->youtube)
+                                            <a href="{{ $social?->youtube ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon youtube">
+                                                <i class="fab fa-youtube"></i>
+                                            </a>
+                                        @endif
+                                        @if ($social?->tiktok)
+                                            <a href="{{ $social?->tiktok ?: 'javascript:void(0)' }}" target="_blank"
+                                                class="social-icon tiktok">
+                                                <i class="fab fa-tiktok"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    @if ($social?->video_link)
+                                        <a data-animation="fadeInRight" data-delay="1.0s" class="popup-video video-btn"
+                                            href="{{ $social?->video_link ?: 'https://www.youtube.com/watch?v=CvYr4aFNHzM' }}">
+                                            <i class="fas fa-play"></i>
+                                        </a>
+                                        <p class="video-cap d-nonell d-sm-blcok" data-animation="fadeInRight"
+                                            data-delay="1.0s">
+                                            Play <br> Video
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+
+        <!-- Counter Section Begin -->
+        <div class="counter-section d-none d-sm-block">
+            <div class="cd-timer" id="countdown"
+                data-next-program="{{ $nextProgram ? $nextProgram->date . ' ' . $nextProgram->time : '' }}">
+                <div class="cd-item">
+                    <span>00</span>
+                    <p>Days</p>
+                </div>
+                <div class="cd-item">
+                    <span>00</span>
+                    <p>Hrs</p>
+                </div>
+                <div class="cd-item">
+                    <span>00</span>
+                    <p>Min</p>
+                </div>
+                <div class="cd-item">
+                    <span>00</span>
+                    <p>Sec</p>
+                </div>
+            </div>
+            <h5 class="cd-timer-name">
+                @if ($nextProgram)
+                    {{ $nextProgram->name }}
+                @else
+                    No upcoming program. Stay tuned!
+                @endif
+            </h5>
+        </div>
+        <!-- Counter Section End -->
+    </div>
+    <!-- slider Area End-->
+    <!-- About Section -->
+    <section id="call-to-action" class="call-to-action section">
+        <div class="container" data-animation="fadeInLeft" data-delay=".1s">
+            <div class="advertise-1 d-flex flex-column flex-lg-row gap-4 align-items-center position-relative">
+                <div class="content-left" data-aos="fade-right" data-aos-delay="200">
+                    <span class="badge text-uppercase mb-2">
+                        {{ $landing?->about_heading ?: 'About Us' }}
+                    </span>
+                    <h2>
+                        Cherubim & Seraphim Church Unification Campus Fellowship Lagos State
+                        University Chapter Citizen of heaven
+                    </h2>
+                    <p class="mr-3">
+                        {{ $landing?->about_info ?:
+                            ' Rooted in love, truth, and purpose, we are a Christ-centered community on LASU main campus
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    committed to worship, growth, and fellowship.' }}
+                    </p>
+                    <p><span class="uppercase">Motto:</span> “Remember now your creator in the days of your youth.” Eccl.
+                        12:1.</p>
+                    <p>We belief in</p>
+                    <div class="features d-flex flex-wrap mb-4">
+                        <div class="feature-item m-2" title="God the Father, Son and Holy Spirit">
+                            <i class="far fa-check-circle"></i>
+                            <span>The Trinity</span>
+                        </div>
+                        <div class="feature-item m-2">
+                            <i class="far fa-check-circle"></i>
+                            <span>Salvation by Grace – Through faith in Jesus Christ </span>
+                        </div>
+                        <div class="feature-item m-2" title="Making disciples of all nations">
+                            <i class="far fa-check-circle"></i>
+                            <span>The Great Commission</span>
+                        </div>
+                        <div class="feature-item m-2">
+                            <i class="far fa-check-circle"></i>
+                            <span>Biblical Integrity – Scripture as our ultimate guide</span>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('aboutus') }}" class="btn btn-outline">Learn More</a>
+                </div>
+
+                <div class="content-right position-relative" data-aos="fade-left" data-aos-delay="300">
+                    <img src="{{ $landing?->about_img ? asset('storage/' . $landing->about_img) : asset('assets/img/hero/top4.jpg') }}"
+                        loading="lazy" class="rounded border" width="150" alt="About Image" />
+                    <div class="floating-card">
+                        <div class="card-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="card-content">
+                            <span class="stats-number">Founded</span>
+                            <span class="stats-text" data-year="1987"></span>
+                            <script>
+                                (() => {
+                                    const el = document.querySelector('.stats-text');
+                                    if (!el) return;
+
+                                    const year = +el.dataset.year;
+                                    const age = new Date().getFullYear() - year;
+
+                                    el.textContent = `January ${year}, '${age}'yrs.`;
+                                })();
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="decoration">
+                    <div class="circle-1"></div>
+                    <div class="circle-2"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+    <!-- About Section -->
+    <!--? Team Start -->
+    <section class="team-area pt-180 pb-100 section-bg" data-background="assets/img/gallery/section_bg02.png">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle section-tittle2 mb-50">
+                        <h2>Meet Our Leaders.</h2>
+                        <hr>
+                        <p>
+                            Our fellowship is guided by a team of passionate leaders who serve with humility and follow
+                            Christ’s example. Leadership here isn’t about titles—it’s about helping others grow, building
+                            community, and letting God lead. Whether you’re new or have been with us for a while, our
+                            leaders are here to support, encourage, and inspire you in your spiritual journey.
+                        </p>
+                        <a href="{{ route('executives.index') }}" class="btn hero-btn mt-30">
+                            Current
+                            @if ($AdmYear?->year1)
+                                {{ $AdmYear?->year1 ?: '----' }}
+                            @endif
+                            /
+                            @if ($AdmYear?->year2)
+                                {{ $AdmYear?->year2 ?: '----' }}
+                            @endif
+                            Executives
+                        </a>
+                    </div>
+                </div>
+                @foreach ($teams as $member)
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-team mb-30">
+                            <div class="team-img">
+                                @if ($member->image)
+                                    <a href="{{ asset('storage/' . $member->image) }}" class="img-pop-up">
+                                        <div class="single-gallery-image"
+                                            style="background-image: url('{{ asset('storage/' . $member->image) }}');">
+                                        </div>
+                                    </a>
+                                @else
+                                    <div class="single-gallery-image"
+                                        style="background: url('{{ asset('assets/img/gallery/no-image.jpg') }}');">
+                                    </div>
+                                @endif
+                                <!-- Blog Social -->
+                                <ul class="team-social">
+                                    @if ($member->facebook)
+                                        <li>
+                                            <a href="{{ $member->facebook }}" target="_blank" title="View Profile 1">
+                                                <i class="fa fa-globe"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if ($member->instagram)
+                                        <li>
+                                            <a href="{{ $member->instagram }}" target="_blank" title="View Profile 2">
+                                                <i class="fa-solid fa-user"></i>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                            <div class="team-caption">
+                                <h3><a href="javascript:void(0)">{{ $member->name }}</a></h3>
+                                <p>{{ $member->position }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-team mb-30">
+                        <div class="team-img">
+                            @if ($president)
+                                @if ($president->image)
+                                    <a href="{{ asset('storage/' . $president->image) }}" class="img-pop-up">
+                                        <div class="single-gallery-image"
+                                            style="background-image: url('{{ asset('storage/' . $president->image) }}');">
+                                        </div>
+                                    </a>
+                                @else
+                                    <div class="single-gallery-image"
+                                        style="background: url('{{ asset('assets/img/gallery/no-image.jpg') }}');">
+                                    </div>
+                                @endif
+                                <ul class="team-social">
+                                    @if (!empty($president->instagram))
+                                        <li><a href="{{ $president->instagram }}" target="_blank"><i
+                                                    class="fa-solid fa-user"></i></a></li>
+                                    @endif
+                                </ul>
+                            @else
+                                <div class="single-gallery-image"
+                                    style="background: url('{{ asset('assets/img/gallery/no-image.jpg') }}');">
+                                </div>
+                            @endif
+                        </div>
+                        <div class="team-caption">
+                            @if ($president)
+                                <h3><a href="javascript:void(0)">{{ $president->name }}</a></h3>
+                                <p>Fellowship {{ $president->position }}</p>
+                            @else
+                                <h3><a href="javascript:void(0)">*******</a></h3>
+                                <p>Fellowship President</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Team End -->
+    <!--? Activities -->
+    <section class="accordion fix section-padding30">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5 col-lg-6 col-md-6">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle text-center mb-80">
+                        <h2>Our Activities</h2>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="text-center mx-auto col-lg-">
+                    <div class="properties__button mb-40">
+                        <!--Nav Button  -->
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                                    role="tab" aria-controls="nav-home" aria-selected="true">
+                                    Weekly
+                                </a>
+                            </div>
+                        </nav>
+                        <!--End Nav Button  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <!-- Nav Card -->
+            <div class="tab-content" id="nav-tabContent">
+                <!-- card one -->
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="accordion-wrapper">
+                                <div class="accordion" id="accordionExample">
+                                    @if ($activities->isEmpty())
+                                        <!-- Default single -->
+                                        <div class="card">
+                                            <div class="card-header" id="headingEmpty">
+                                                <h2 class="mb-0">
+                                                    <a href="javascript:void(0)" class="btn-link collapsed"
+                                                        data-toggle="collapse" data-target="#collapseEmpty"
+                                                        aria-expanded="false" aria-controls="collapseEmpty">
+                                                        <span>It's Jesus O'Clock</span>
+                                                        <p>Let's talk about Jesus Christ our Master</p>
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                            <div id="collapseEmpty" class="collapse show" aria-labelledby="headingEmpty"
+                                                data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                    <b>Remember Jesus loves you!</b> <br>
+                                                    For God so olove the world that he gave his only begotten son that
+                                                    whosoever believes in him shouldn't perish but have an evalasting life.
+                                                    "John 3: 16"
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        @foreach ($activities as $activity)
+                                            @php $id = 'item'.$loop->index; @endphp
+                                            <div class="card">
+                                                <div class="card-header" id="heading{{ $id }}">
+                                                    <h2 class="mb-0">
+                                                        <a href="javascript:void(0)" class="btn-link collapsed"
+                                                            data-toggle="collapse"
+                                                            data-target="#collapse{{ $id }}"
+                                                            aria-expanded="false"
+                                                            aria-controls="collapse{{ $id }}">
+                                                            <span>
+                                                                {{ \Carbon\Carbon::createFromFormat('H:i:s', $activity->time1)->format('g:i A') }}
+                                                                -
+                                                                {{ \Carbon\Carbon::createFromFormat('H:i:s', $activity->time2)->format('g:i A') }}
+                                                            </span>
+                                                            <p>{{ $activity->day }}</p>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+
+                                                <div id="collapse{{ $id }}" class="collapse"
+                                                    aria-labelledby="heading{{ $id }}"
+                                                    data-parent="#accordionExample">
+                                                    <div class="card-body">
+                                                        <span>{{ $activity->title }}</span> <br>
+                                                        {!! $activity->body !!}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Nav Card -->
+        </div>
+    </section>
+    <!-- Activities End -->
+    <!--? Program Start -->
+    <section class="team-area pt-180 pb-100 section-bg" data-background="assets/img/gallery/section_bg02.png">
+        <div class="container">
+            <!-- Countdown Area Start -->
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-12">
+                    <div class="section-tittle section-tittle2 mb-50">
+                        <h2>Our Programs.</h2>
+                        <hr>
+                        <p> <strong>What Next?</strong> Mark your calendars for these exciting upcoming programs for these
+                            Administration.
+                            Don't miss out and RSVP to secure a space.
+                        </p>
+                        <a href="{{ route('programs.index') }}" class="btn hero-btn mt-30">
+                            View All
+                            @if ($AdmYear?->year1)
+                                {{ $AdmYear?->year1 ?: '----' }}
+                            @endif
+                            /
+                            @if ($AdmYear?->year2)
+                                {{ $AdmYear?->year2 ?: '----' }}
+                            @endif
+                            Programs
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="countdown-carousel owl-carousel pb-30">
+                        @if ($programs->isEmpty())
+                            <!-- Placeholder Countdown -->
+                            <div class="single-countdown text-center p-5" data-date="2024-07-13T09:00:00">
+                                <h3>Stay Tuned!</h3>
+                                <p>Our upcoming programs will be announced soon.</p>
+                                <div class="cd-timer">
+                                    <div class="cd-item"><span class="days">00</span>
+                                        <p>Days</p>
+                                    </div>
+                                    <div class="cd-item"><span class="hours">00</span>
+                                        <p>Hrs</p>
+                                    </div>
+                                    <div class="cd-item"><span class="minutes">00</span>
+                                        <p>Min</p>
+                                    </div>
+                                    <div class="cd-item"><span class="seconds">00</span>
+                                        <p>Sec</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-calendar-days fa-3x" style="color: #6c757d; margin-top: 10px;"></i>
+                            </div>
+                        @else
+                            {{-- Real Programs --}}
+                            @foreach ($programs as $program)
+                                <div class="single-countdown" data-date="{{ $program->date }}T{{ $program->time }}">
+                                    <h3>{{ $program->name }}</h3>
+                                    <p>{{ $program->semester }}</p>
+                                    <div class="cd-timer">
+                                        <div class="cd-item"><span class="days">00</span>
+                                            <p>Days</p>
+                                        </div>
+                                        <div class="cd-item"><span class="hours">00</span>
+                                            <p>Hrs</p>
+                                        </div>
+                                        <div class="cd-item"><span class="minutes">00</span>
+                                            <p>Min</p>
+                                        </div>
+                                        <div class="cd-item"><span class="seconds">00</span>
+                                            <p>Sec</p>
+                                        </div>
+                                    </div>
+
+                                    @if ($program->rsvp)
+                                        <a href="{{ $program->rsvp }}" target="_blank" class="btn header-btn rounded">
+                                            RSVP
+                                        </a>
+                                    @else
+                                        <a class="btn header-btn rounded disable text-light" style="cursor: not-allowed">
+                                            N/A
+                                        </a>
+                                    @endif
+
+                                    <a href="javascript:void(0)" class="btn rounded calender-btn save-to-calendar"
+                                        data-title="{{ $program->name }}"
+                                        data-date="{{ $program->date }}T{{ $program->time }}" data-duration="120"
+                                        data-description="{{ $program->details ?? '' }}"
+                                        data-location="Church Main Hall">
+                                        <i class="far fa-calendar-plus"></i> Add to Calendar
+                                    </a>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Countdown Area End -->
+        </div>
+    </section>
+    <!-- Program End -->
+    <!--? Gallery Start -->
+    <div class="gallery-area fix">
+        <div class="container p-0">
+            <div class="countdown-carousel owl-carousel pb-10">
+                <!-- Image Slide -->
+                @if ($galleryImages->count())
+                    @foreach ($galleryImages as $img)
+                        <div class="single-countdown">
+                            <a href="{{ asset('storage/' . $img->image) }}" href="javascript:void(0)"
+                                class="img-pop-up">
+                                <img class="single-gallery-image img-thumbnail mx-auto d-block" loading="lazy"
+                                    src="{{ asset('storage/' . $img->image) }}"
+                                    alt="Gallery_Image_for_{{ $img->short_bio }}">
+                                @if ($img->short_bio)
+                                    <h3 class="text-dark">{{ $img->short_bio }}</h3>
+                                @endif
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="single-countdown">
+                        <h3 class="text-dark">No images in the gallery yet.</h3>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+    <!-- Gallery End -->
+    <!-- Faq Section -->
+    <section class="faq-9 faq pt-180 pb-100 section-bg" id="faq">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5" data-aos="fade-up">
+                    <h2 class="faq-title">
+                        Have a question? <br>
+                        <span class="inner">Our Frequently Asked Questions (FAQ)</span>
+                    </h2>
+                    <hr>
+                    <p class="faq-description">
+                        Got questions? We’ve got answers! This section is here to help you understand everything about our
+                        fellowship what we do, how to join, and what to expect.
+                    </p>
+                    <div class="faq-arrow d-none d-lg-block" data-aos="fade-up" data-aos-delay="200">
+                        <svg class="faq-arrow" width="200" height="211" viewBox="0 0 200 211" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M198.804 194.488C189.279 189.596 179.529 185.52 169.407 182.07L169.384 182.049C169.227 181.994 169.07 181.939 168.912 181.884C166.669 181.139 165.906 184.546 167.669 185.615C174.053 189.473 182.761 191.837 189.146 195.695C156.603 195.912 119.781 196.591 91.266 179.049C62.5221 161.368 48.1094 130.695 56.934 98.891C84.5539 98.7247 112.556 84.0176 129.508 62.667C136.396 53.9724 146.193 35.1448 129.773 30.2717C114.292 25.6624 93.7109 41.8875 83.1971 51.3147C70.1109 63.039 59.63 78.433 54.2039 95.0087C52.1221 94.9842 50.0776 94.8683 48.0703 94.6608C30.1803 92.8027 11.2197 83.6338 5.44902 65.1074C-1.88449 41.5699 14.4994 19.0183 27.9202 1.56641C28.6411 0.625793 27.2862 -0.561638 26.5419 0.358501C13.4588 16.4098 -0.221091 34.5242 0.896608 56.5659C1.8218 74.6941 14.221 87.9401 30.4121 94.2058C37.7076 97.0203 45.3454 98.5003 53.0334 98.8449C47.8679 117.532 49.2961 137.487 60.7729 155.283C87.7615 197.081 139.616 201.147 184.786 201.155L174.332 206.827C172.119 208.033 174.345 211.287 176.537 210.105C182.06 207.125 187.582 204.122 193.084 201.144C193.346 201.147 195.161 199.887 195.423 199.868C197.08 198.548 193.084 201.144 195.528 199.81C196.688 199.192 197.846 198.552 199.006 197.935C200.397 197.167 200.007 195.087 198.804 194.488ZM60.8213 88.0427C67.6894 72.648 78.8538 59.1566 92.1207 49.0388C98.8475 43.9065 106.334 39.2953 114.188 36.1439C117.295 34.8947 120.798 33.6609 124.168 33.635C134.365 33.5511 136.354 42.9911 132.638 51.031C120.47 77.4222 86.8639 93.9837 58.0983 94.9666C58.8971 92.6666 59.783 90.3603 60.8213 88.0427Z"
+                                fill="currentColor"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="col-lg-7" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-container">
+
+                        @if ($faqs->isEmpty())
+                            <div class="faq-item faq-active">
+                                <h3>No Record available</h3>
+                                <div class="faq-content">
+                                    <p>
+                                        Come back to view our faqs!
+                                        <br>
+                                        Meanwhile, do you know about Jesus? Our lord and Personal Saviour
+                                    </p>
+                                </div>
+                                <i class="faq-toggle fa-solid fa-chevron-right"></i>
+                            </div><!-- End Faq item-->
+                        @else
+                            @foreach ($faqs as $faq)
+                                <div class="faq-item {{ $loop->first ? 'faq-active' : '' }}">
+                                    <h3>{{ $faq->title }}</h3>
+                                    <div class="faq-content">
+                                        <p>
+                                            {{-- Use this if you want plain text --}}
+                                            {{ strip_tags(html_entity_decode($faq->body)) }}
+                                            {{-- OR allow HTML (recommended for Quill editor) --}}
+                                            {{-- {!! $faq->body !!} --}}
+                                        </p>
+                                    </div>
+
+                                    <i class="faq-toggle fa-solid fa-chevron-right"></i>
+                                </div><!-- End Faq item-->
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- /Faq Section -->
+    <!--? Donation Area Start-->
+    <section class="work-company section-padding30" style="background: #2e0e8c;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 col-md-12">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle section-tittle2 mb-50">
+                        <h2>Be a Kingdom Builder.</h2>
+                        <hr>
+                        <p>
+                            Your giving makes a difference.
+                            Every seed you sow helps us reach more students, grow spiritually, and carry out impactful
+                            events on campus and beyond. From outreach to worship gatherings, your support empowers us to
+                            live out God’s purpose together.
+                            Join us in building a generation that shines for Christ. No gift is too small only a willing
+                            heart.
+                        </p>
+                        <!-- Button to Open the Modal -->
+                        <button type="button" class="btn hero-btn mt-30" data-toggle="modal" data-target="#myModal">
+                            Sow a Seed
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="countdown-carousel owl-carousel pb-30">
+                        <!-- Countdown 1 -->
+                        <div class="single-countdown">
+                            <img class="img-thumbnail mx-auto d-block" src="/assets/img/gallery/support-1.jpg"
+                                alt="" style="width:400px;height:400px;">
+                        </div>
+                        <!-- Countdown 2 -->
+                        <div class="single-countdown">
+                            <img class="img-thumbnail mx-auto d-block" src="/assets/img/gallery/support.jpg"
+                                alt="" style="width:400px;height:400px;">
+                        </div>
+                        <!-- Countdown 3 -->
+                        <div class="single-countdown">
+                            <img class="img-thumbnail mx-auto d-block" src="/assets/img/gallery/support-2.jpg"
+                                alt="" style="width:400px;height:400px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- Donation Area End-->
+    <!-- Call To Action Newsletter Section -->
+    <section id="call-to-action" class="call-to-action2 section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-4 justify-content-between align-items-center">
+                <div class="col-lg-6">
+                    <div class="cta-content" data-aos="fade-up" data-aos-delay="200">
+                        <h2>Newsletter</h2>
+                        <p>Subscribe to our mailing list to receive updates and news about
+                            upcoming fellowship activities. We’d love to grow in faith and community with you.</p>
+                        <form class="php-email-form cta-form" data-aos="fade-up" data-aos-delay="300"
+                            action="{{ route('subscribe') }}" method="post">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <input type="email" name="email" id="email" class="form-control"
+                                    placeholder="Enter your Email address..." aria-label="Email address"
+                                    aria-describedby="button-subscribe" required minlength="3" maxlength="300">
+                                <button class="btn btn-primary" type="submit" id="button-subscribe">Subscribe</button>
+                            </div>
+                        </form>
+                        <div class="m-1">
+                            @if (session()->has('success'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('success') }}
+                                </div>
+                            @endif
+                            @if (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cta-image" data-aos="zoom-out" data-aos-delay="200">
+                        <img src="assets/img/gallery/callout.png" alt="" class="img-fluid btn-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Call To Action Newsletter Section End -->
+    <!--? Fellowship Blog Spot -->
+    <section class="home-blog-area section-padding30">
+        <div class="container">
+            <!-- Section Tittle -->
+            <div class="row justify-content-center">
+                <div class="col-xl-5 col-lg-6 col-md-6">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle text-center mb-50">
+                        <h2>Fellowship Journal</h2>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6">
+                    <div class="home-blog-single mb-30">
+                        <div class="blog-img-cap h-100 d-flex flex-column">
+                            <div class="blog-img position-relative" style="height: 350px; overflow: hidden;">
+                                <img class="w-100 h-100 object-fit-cover" src="assets/img/blog/blog-2.jpg"
+                                    alt="">
+                                <!-- Blog date -->
+                                <div class="blog-date text-center">
+                                    <span> <i class="fa-solid fa-bell"></i></span>
+                                    <p>Stay Updated!</p>
+                                </div>
+                            </div>
+                            <div class="blog-cap">
+                                <p>| In Case You Missed It</p>
+                                <h3>
+                                    <a href="{{ route('announcements.index') }}">
+                                        Church announcement page for this every administration
+                                    </a>
+                                </h3>
+                                <a href="{{ route('announcements.index') }}" class="more-btn">Read more »</a>
+                                <!-- <a href="blog_details.html" class="more-btn float-right">Blog Page</a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6">
+                    <div class="home-blog-single mb-30">
+                        <div class="blog-img-cap h-100 d-flex flex-column">
+                            <div class="blog-img position-relative" style="height: 350px; overflow: hidden;">
+                                <img class="w-100 h-100 object-fit-cover"
+                                    src="{{ asset('assets/img/hero/past_cns.jpg') }}" alt="">
+                                <!-- Blog date -->
+                                <div class="blog-date text-center">
+                                    <span><i class="fa-solid fa-users"></i></span>
+                                    <p>Family Reunion</p>
+                                </div>
+                            </div>
+                            <div class="blog-cap">
+                                <p>| Leadership History</p>
+                                <h3>
+                                    <a href="{{ route('leaders.index') }}">
+                                        Fellowship leaders: past & present
+                                    </a>
+                                </h3>
+                                <a href="{{ route('leaders.index') }}" class="more-btn">Read more »</a>
+                                {{-- <a href="blog_details.html" class="more-btn float-right">Blog Page</a> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Fellowship Blog Spot End -->
+
+    <!-- Show Latest 3 Announcements as Popup -->
+    @php
+        $announcements = \App\Models\Announcement::latest()->take(3)->get();
+    @endphp
+
+    @if ($announcements->count())
+        <div class="modal anouncement fade" id="announcementModal" tabindex="-1" role="dialog"
+            aria-labelledby="announcementModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content rounded-0">
+                    <div class="modal-body bg-image overlayl"
+                        style="background-image: url('{{ asset('assets/img/blog/announcement.jpg') }}');">
+
+                        <div class="line px-3 to-front">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="mx-auto">
+                                    <h2 class="text-white m-0 uppercase">
+                                        Quick Announcements
+                                    </h2>
+                                </div>
+                                <div class="">
+                                    <a href="javascript:void(0)" class="text-white" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        <i class="fa-solid fa-circle-xmark fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 to-front">
+                            <!-- Add carousel-fade for smooth transitions -->
+                            <div id="announcementCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel"
+                                data-bs-interval="6000">
+                                <div class="carousel-inner">
+
+                                    @foreach ($announcements as $key => $announcement)
+                                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                            <div class="text-center text-white">
+                                                <h3 class="uppercase">
+                                                    {{ Str::limit($announcement->title, 30, '...') }}
+                                                </h3>
+                                                <p class="mb-4"
+                                                    style="white-space: pre-line; font-size:15px; line-height:1.6;">
+                                                    {{ Str::limit(strip_tags(html_entity_decode($announcement->body)), 200, '...') }}
+                                                </p>
+                                                <p class="mb-0 cancel">
+                                                    <a href="{{ route('announcements.show', $announcement->slug) }}"
+                                                        class="text-light">
+                                                        View Details
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Carousel controls -->
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#announcementCarousel" data-bs-slide="prev">
+                                    <i class="fa-solid fa-chevron-left fa-lg text-white"></i>
+                                    <!-- <span class="visually-hidden">Previous</span> -->
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#announcementCarousel" data-bs-slide="next">
+                                    <i class="fa-solid fa-chevron-right fa-lg text-white"></i>
+                                    <!-- <span class="visually-hidden">Next</span> -->
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+@endsection
+@section('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            //################## Slider Background Image Changer
+            const sliderArea = document.querySelector('.slider-area');
+
+            const images = [
+                '/assets/img/hero/hero4.png',
+                @foreach ($images as $image)
+                    '{{ asset("storage/$image") }}',
+                @endforeach
+            ];
+
+            let current = 0;
+            let preloaded = {};
+
+            function preloadImage(src) {
+                if (!preloaded[src]) {
+                    const img = new Image();
+                    img.src = src;
+                    preloaded[src] = true;
+                }
+            }
+
+            function changeBackground() {
+                const next = (current + 1) % images.length;
+                const nextImage = images[next];
+
+                preloadImage(nextImage);
+
+                const temp = new Image();
+                temp.src = nextImage;
+                temp.onload = () => {
+                    sliderArea.classList.remove('active');
+                    setTimeout(() => {
+                        sliderArea.style.backgroundImage = `url(${nextImage})`;
+                        void sliderArea.offsetWidth; // restart animation
+                        sliderArea.classList.add('active');
+                        current = next;
+                    }, 300);
+                };
+            }
+
+            // Initial background
+            sliderArea.style.backgroundImage = `url(${images[0]})`;
+            sliderArea.classList.add('active');
+
+            if (images.length > 1) preloadImage(images[1]);
+
+            setInterval(changeBackground, 9000);
+            //####################### Slider Background Image Changer End
+            //############################################## Announcement PopUp
+            const modal = new bootstrap.Modal(document.getElementById('announcementModal'));
+            // modal.show();
+            if (!localStorage.getItem('announcementShownToday')) {
+                const modal = new bootstrap.Modal(document.getElementById('announcementModal'));
+                modal.show();
+                localStorage.setItem('announcementShownToday', new Date().toDateString());
+            }
+            // #################### Announcement PopUp END
+
+            // Handle all calendar save links
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.save-to-calendar')) {
+                    e.preventDefault();
+                    const link = e.target.closest('.save-to-calendar');
+                    addToCalendarDirectly(link);
+                }
+            });
+
+            function addToCalendarDirectly(link) {
+                const title = link.getAttribute('data-title');
+                const dateStr = link.getAttribute('data-date');
+                const duration = parseInt(link.getAttribute('data-duration')) || 120; // Default 2 hours
+                const description = link.getAttribute('data-description') || '';
+                const location = link.getAttribute('data-location') || '';
+
+                try {
+                    const startDate = new Date(dateStr);
+                    const endDate = new Date(startDate.getTime() + duration * 60000);
+
+                    // 1. First try the Web Calendar API (works on some mobile devices)
+                    if (navigator.calendar && navigator.calendar.createEvent) {
+                        navigator.calendar.createEvent({
+                            title: title,
+                            location: location,
+                            description: description,
+                            startDate: startDate,
+                            endDate: endDate
+                        });
+                        showSavedFeedback(link);
+                        return;
+                    }
+
+                    // 2. Try the MS Outlook protocol (works for Outlook desktop)
+                    if (navigator.userAgent.includes('Windows')) {
+                        const outlookUrl = generateOutlookUrl(title, startDate, endDate, description, location);
+                        window.location.href = outlookUrl;
+                        setTimeout(() => showSavedFeedback(link), 500);
+                        return;
+                    }
+
+                    // 3. Try the Google Calendar web interface
+                    const googleUrl = generateGoogleCalendarUrl(title, startDate, endDate, description, location);
+                    window.open(googleUrl, '_blank');
+                    showSavedFeedback(link);
+
+                } catch (error) {
+                    console.error('Error adding to calendar:', error);
+                    // Fallback to manual .ics download if all else fails
+                    downloadIcsFile(title, startDate, endDate, description, location);
+                    showSavedFeedback(link);
+                }
+            }
+
+            function generateGoogleCalendarUrl(title, startDate, endDate, description, location) {
+                const format = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
+                return `https://www.google.com/calendar/render?action=TEMPLATE` +
+                    `&text=${encodeURIComponent(title)}` +
+                    `&dates=${format(startDate)}/${format(endDate)}` +
+                    `&details=${encodeURIComponent(description)}` +
+                    `&location=${encodeURIComponent(location)}` +
+                    `&sf=true&output=xml`;
+            }
+
+            function generateOutlookUrl(title, startDate, endDate, description, location) {
+                const format = (date) => date.toISOString().replace(/-|:|\.\d+/g, '').slice(0, 15) + 'Z';
+                return `outlookcal:${format(startDate)}/${format(endDate)}` +
+                    `?subject=${encodeURIComponent(title)}` +
+                    `&body=${encodeURIComponent(description)}` +
+                    `&location=${encodeURIComponent(location)}`;
+            }
+
+            function downloadIcsFile(title, startDate, endDate, description, location) {
+                const icsData = [
+                    'BEGIN:VCALENDAR',
+                    'VERSION:2.0',
+                    'BEGIN:VEVENT',
+                    `UID:${Date.now()}@yourdomain.com`,
+                    `DTSTAMP:${new Date().toISOString().replace(/-|:|\.\d+/g, '')}`,
+                    `DTSTART:${startDate.toISOString().replace(/-|:|\.\d+/g, '')}`,
+                    `DTEND:${endDate.toISOString().replace(/-|:|\.\d+/g, '')}`,
+                    `SUMMARY:${title}`,
+                    `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
+                    `LOCATION:${location}`,
+                    'END:VEVENT',
+                    'END:VCALENDAR'
+                ].join('\r\n');
+
+                // Create invisible iframe to handle the download
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = URL.createObjectURL(new Blob([icsData], {
+                    type: 'text/calendar'
+                }));
+                document.body.appendChild(iframe);
+                setTimeout(() => document.body.removeChild(iframe), 1000);
+            }
+
+            function showSavedFeedback(link) {
+                const originalHTML = link.innerHTML;
+                link.innerHTML = '<i class="fas fa-check"></i> Added!';
+                link.style.pointerEvents = 'none';
+
+                setTimeout(() => {
+                    link.innerHTML = originalHTML;
+                    link.style.pointerEvents = 'auto';
+                }, 2000);
+            }
+
+        });
+
+        $(document).ready(function() {
+            // Initialize carousel
+            $(".countdown-carousel").owlCarousel({
+                items: 1,
+                loop: true,
+                nav: true,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                autoplayHoverPause: true
+            });
+
+            // Initialize all countdowns
+            function initializeCountdowns() {
+                $('.single-countdown').each(function() {
+                    const countdownElement = $(this);
+                    const endDate = new Date(countdownElement.data('date')).getTime();
+
+                    // Update countdown immediately
+                    updateCountdown(countdownElement, endDate);
+
+                    // Set interval to update every second
+                    setInterval(function() {
+                        updateCountdown(countdownElement, endDate);
+                    }, 1000);
+                });
+            }
+
+            // Update a single countdown
+            function updateCountdown(element, endDate) {
+                const now = new Date().getTime();
+                const distance = endDate - now;
+
+                if (distance < 0) {
+                    // Time's up!
+                    element.find('.days').text('00');
+                    element.find('.hours').text('00');
+                    element.find('.minutes').text('00');
+                    element.find('.seconds').text('00');
+                    return;
+                }
+
+                // Calculate time units
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Update the display
+                element.find('.days').text(days.toString().padStart(2, '0'));
+                element.find('.hours').text(hours.toString().padStart(2, '0'));
+                element.find('.minutes').text(minutes.toString().padStart(2, '0'));
+                element.find('.seconds').text(seconds.toString().padStart(2, '0'));
+            }
+
+            // Start all countdowns
+            initializeCountdowns();
+
+            // Reinitialize countdowns when carousel changes (for visibility)
+            $('.countdown-carousel').on('changed.owl.carousel', function() {
+                initializeCountdowns();
+            });
+
+            //Calender Method
+
+        });
+
+        $(document).ready(function() {
+            var $countdown = $("#countdown");
+            if (!$countdown.length) return;
+            var timerdate = $countdown.attr("data-next-program");
+            if (!timerdate) {
+                console.warn("Countdown date missing");
+                return;
+            }
+            $countdown.countdown(timerdate, function(event) {
+                $(this).html(
+                    "<div class='cd-item'><span>" + event.strftime('%D') + "</span><p>Days</p></div>" +
+                    "<div class='cd-item'><span>" + event.strftime('%H') + "</span><p>Hrs</p></div>" +
+                    "<div class='cd-item'><span>" + event.strftime('%M') + "</span><p>Min</p></div>" +
+                    "<div class='cd-item'><span>" + event.strftime('%S') + "</span><p>Sec</p></div>"
+                );
+            });
+        });
+    </script>
+@endsection
