@@ -127,6 +127,11 @@
                                     {{ __('Past & Present Leaders') }}
                                 </a>
 
+                                <a href="{{ route('birthdays.create') }}"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center w-auto">
+                                    {{ __('Member Birthday') }}
+                                </a>
+
                                 {{-- Developer management --}}
                                 <a href="{{ route('developer.dashboard') }}"
                                     class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-center">
@@ -226,7 +231,7 @@
                                     {{ __('Past & Present Leaders') }}
                                 </a>
 
-                                <a href="{{ route('birthday.create') }}"
+                                <a href="{{ route('birthdays.create') }}"
                                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center w-auto">
                                     {{ __('Member Birthday') }}
                                 </a>
