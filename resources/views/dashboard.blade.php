@@ -77,11 +77,6 @@
                                     {{ __('Manage Program') }}
                                 </a>
 
-                                <a href="{{ route('galleries.create') }}"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center">
-                                    {{ __('Manage Gallery') }}
-                                </a>
-
                                 <a href="{{ route('templates.index') }}"
                                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center">
                                     {{ __('Manage Newsletter') }}
