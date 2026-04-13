@@ -144,8 +144,8 @@
                                     <!-- Social Icons -->
                                     <div class="social-icons-wrapper" data-animation="fadeInUp" data-delay="1.2s">
                                         <!-- <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="social-icon whatsapp">
-                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="fab fa-whatsapp"></i>
-                                                                                                                                                                                                                                                                                                                                                                                                                                </a> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="fab fa-whatsapp"></i>
+                                                                                                                                                                                                                                                                                                                                                                                                                                        </a> -->
                                         @if ($social?->twitter)
                                             <a href="{{ $social?->twitter ?: 'javascript:void(0)' }}" target="_blank"
                                                 class="social-icon facebook">
@@ -194,8 +194,8 @@
                                         </p>
                                     @endif
                                     <!-- <a data-animation="fadeInLeft" data-delay="1.0s" href="industries.html"
-                                                                                                                                                                                                                                                                                                                                                                                                                                class="btn hero-btn rounded">Join Us
-                                                                                                                                                                                                                                                                                                                                                                                                                            </a> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                        class="btn hero-btn rounded">Join Us
+                                                                                                                                                                                                                                                                                                                                                                                                                                    </a> -->
                                 </div>
 
                             </div>
@@ -321,7 +321,7 @@
                     <p class="mr-3">
                         {{ $landing?->about_info ?:
                             ' Rooted in love, truth, and purpose, we are a Christ-centered community on LASU main campus
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            committed to worship, growth, and fellowship.' }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            committed to worship, growth, and fellowship.' }}
                     </p>
                     <p><span class="uppercase">Motto:</span> “Remember now your creator in the days of your youth.” Eccl.
                         12:1.</p>
@@ -349,7 +349,7 @@
                 </div>
 
                 <div class="content-right position-relative" data-aos="fade-left" data-aos-delay="300">
-                    <img src="{{ $landing?->about_img ? asset('storage/' . $landing->about_img) : asset('assets/img/hero/top4.jpg') }}"
+                    <img src="{{ $landing?->about_img ? $landing->about_img : asset('assets/img/hero/top4.jpg') }}"
                         loading="lazy" class="rounded border" width="150" alt="About Image" />
                     <div class="floating-card">
                         <div class="card-icon">
@@ -417,9 +417,9 @@
                         <div class="single-team mb-30">
                             <div class="team-img">
                                 @if ($member->image)
-                                    <a href="{{ asset('storage/' . $member->image) }}" class="img-pop-up">
+                                    <a href="{{ $member->image }}" class="img-pop-up">
                                         <div class="single-gallery-image"
-                                            style="background-image: url('{{ asset('storage/' . $member->image) }}');">
+                                            style="background-image: url('{{ $member->image }}');">
                                         </div>
                                     </a>
                                 @else
@@ -457,9 +457,9 @@
                         <div class="team-img">
                             @if ($president)
                                 @if ($president->image)
-                                    <a href="{{ asset('storage/' . $president->image) }}" class="img-pop-up">
+                                    <a href="{{ $president->image }}" class="img-pop-up">
                                         <div class="single-gallery-image"
-                                            style="background-image: url('{{ asset('storage/' . $president->image) }}');">
+                                            style="background-image: url('{{ $president->image }}');">
                                         </div>
                                     </a>
                                 @else
@@ -704,11 +704,9 @@
                 @if ($galleryImages->count())
                     @foreach ($galleryImages as $img)
                         <div class="single-countdown">
-                            <a href="{{ asset('storage/' . $img->image) }}" href="javascript:void(0)"
-                                class="img-pop-up">
+                            <a href="{{ $img->image }}" href="javascript:void(0)" class="img-pop-up">
                                 <img class="single-gallery-image img-thumbnail mx-auto d-block" loading="lazy"
-                                    src="{{ asset('storage/' . $img->image) }}"
-                                    alt="Gallery_Image_for_{{ $img->short_bio }}">
+                                    src="{{ $img->image }}" alt="Gallery_Image_for_{{ $img->short_bio }}">
                                 @if ($img->short_bio)
                                     <h3 class="text-dark">{{ $img->short_bio }}</h3>
                                 @endif
@@ -1032,7 +1030,7 @@
             const images = [
                 '/assets/img/hero/hero4.png',
                 @foreach ($images as $image)
-                    '{{ $hero->image }}',
+                    '{{ $image }}',
                 @endforeach
             ];
 

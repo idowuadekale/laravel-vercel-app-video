@@ -143,7 +143,7 @@
                             <div class="table-row">
                                 <div class="serial" style="width: 300px;">
                                     @if ($birthday->image)
-                                        <img src="{{ asset('storage/' . $birthday->image) }}" class="rounded"
+                                        <img src="{{ $birthday->image }}" class="rounded"
                                             style="width: auto; height: 30px;" alt="Flyer">
                                     @else
                                         N/A

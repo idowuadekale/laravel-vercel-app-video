@@ -17,8 +17,7 @@
                 <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
                     <div class="visit-image">
                         @if ($program->image)
-                            <img src="{{ asset('storage/' . $program->image) }}" class="img-fluid" alt="Program Image"
-                                loading="lazy">
+                            <img src="{{ $program->image }}" class="img-fluid" alt="Program Image" loading="lazy">
                         @else
                             <img src="{{ asset('assets/img/gallery/no-image.jpg') }}" alt="No Image" class="img-fluid"
                                 loading="lazy">

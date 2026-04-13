@@ -109,8 +109,8 @@
                             <div class="table-row">
                                 <div class="serial" style="width: 300px;">
                                     @if ($group->image)
-                                        <img src="{{ asset('storage/' . $group->image) }}" class="rounded"
-                                            style="width: auto; height: 30px;" alt="Image">
+                                        <img src="{{ $group->image }}" class="rounded" style="width: auto; height: 30px;"
+                                            alt="Image">
                                     @else
                                         N/A
                                     @endif

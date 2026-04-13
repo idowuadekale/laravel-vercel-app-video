@@ -97,8 +97,8 @@
                                         <div class="alumni-card">
                                             <div class="alumni-image">
                                                 @if ($leader->image)
-                                                    <img src="{{ asset('storage/' . $leader->image) }}" alt="Image"
-                                                        class="img-fluid" loading="lazy">
+                                                    <img src="{{ $leader->image }}" alt="Image" class="img-fluid"
+                                                        loading="lazy">
                                                 @else
                                                     <img src="assets/img/gallery/no-image.jpg" alt="Image"
                                                         class="img-fluid" loading="lazy">

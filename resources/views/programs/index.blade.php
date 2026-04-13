@@ -85,10 +85,9 @@
                         <div class="service-card position-relative z-1">
                             <div class="service-icon">
                                 @if (!empty($program->image))
-                                    <img src="{{ asset('storage/' . $program->image) }}" alt="{{ $program->name }}"
+                                    <img src="{{ $program->image }}" alt="{{ $program->name }}"
                                         class="img-fluid rounded clickable-image" style="max-width:80px; cursor:pointer;"
-                                        title="{{ $program->name }} Flyer"
-                                        data-image="{{ asset('storage/' . $program->image) }}">
+                                        title="{{ $program->name }} Flyer" data-image="{{ $program->image }}">
                                 @else
                                     <img src="assets/img/gallery/no-image.jpg" alt="no-image" class="img-fluid"
                                         style="max-width:60px; cursor:not-allowed;" title="No Image">
@@ -144,7 +143,7 @@
                                     data-description="{{ Str::limit($program->details, 150) }}"
                                     data-date="{{ \Carbon\Carbon::parse($program->date)->format('l, F jS Y') }}"
                                     data-time="{{ \Carbon\Carbon::createFromFormat('H:i:s', $program->time)->format('g:i A') }}"
-                                    data-image="{{ asset('storage/' . $program->image) ?? asset('assets/img/gallery/no-image.jpg') }}">
+                                    data-image="{{ $program->image ?? asset('assets/img/gallery/no-image.jpg') }}">
                                     <i class="fas fa-share-alt"></i> Share
                                 </a>
                             </div>

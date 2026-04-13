@@ -67,7 +67,7 @@
                                     </td>
                                     <td>
                                         @if ($template->image)
-                                            <img src="{{ asset('storage/' . $template->image) }}" class="rounded"
+                                            <img src="{{ $template->image }}" class="rounded"
                                                 style="width: auto; height: 30px;" alt="Image">
                                         @else
                                             N/A

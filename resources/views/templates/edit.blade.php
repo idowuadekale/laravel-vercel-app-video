@@ -159,8 +159,8 @@
                                 </div>
                                 <div class="my-2">
                                     @if ($template->image)
-                                        <img src="{{ asset('storage/' . $template->image) }}" class="rounded border"
-                                            width="150" height="150" alt="Program Image">
+                                        <img src="{{ $template->image }}" class="rounded border" width="150"
+                                            height="150" alt="Program Image">
                                     @endif
                                     <img src="" id="previewUploadImg" class="rounded border" style="display: none;"
                                         width="150" height="150" alt="Program Image">

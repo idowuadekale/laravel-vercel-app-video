@@ -122,8 +122,8 @@
                             <div class="table-row">
                                 <div class="serial" style="width: 300px;">
                                     @if ($leader->image)
-                                        <img src="{{ asset('storage/' . $leader->image) }}" class="rounded"
-                                            style="width: auto; height: 30px;" alt="Flyer">
+                                        <img src="{{ $leader->image }}" class="rounded" style="width: auto; height: 30px;"
+                                            alt="Flyer">
                                     @else
                                         N/A
                                     @endif

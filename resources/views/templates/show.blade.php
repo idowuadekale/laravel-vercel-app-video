@@ -44,7 +44,7 @@
                             </li>
                             <li class="m-2"><i class="fas fa-file-image"></i> <strong>Flyer:</strong>
                                 @if ($template->image)
-                                    <a href="{{ asset('storage/' . $template->image) }}" class="text-muted" target="_blank">
+                                    <a href="{{ $template->image }}" class="text-muted" target="_blank">
                                         View Image
                                     </a>
                                 @else

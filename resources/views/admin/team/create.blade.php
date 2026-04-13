@@ -136,7 +136,7 @@
                             <div class="table-row">
                                 <div class="serial" style="width: 300px;">
                                     @if ($member->image)
-                                        <img src="{{ asset('storage/' . $member->image) }}" class="rounded"
+                                        <img src="{{ $member->image }}" class="rounded"
                                             style="width: auto; height: 30px;" alt="Image">
                                     @else
                                         N/A

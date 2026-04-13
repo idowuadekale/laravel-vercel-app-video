@@ -83,8 +83,8 @@
                                 </div>
                                 <div class="my-2">
                                     @if (!empty($landing->about_img))
-                                        <img src="{{ asset('storage/' . $landing->about_img) }}" class="rounded border"
-                                            width="150" height="150" alt="Program Image">
+                                        <img src="{{ $landing->about_img }}" class="rounded border" width="150"
+                                            height="150" alt="Program Image">
                                     @endif
                                     <img src="" id="previewUploadImg" class="rounded border" style="display: none;"
                                         width="150" height="150" alt="Program Image">

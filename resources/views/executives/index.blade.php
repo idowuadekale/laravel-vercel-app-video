@@ -93,10 +93,9 @@
                             <div class="single-team mb-30">
                                 <div class="team-img">
                                     @if ($executive->image)
-                                        <a href="{{ asset('storage/' . $executive->image) }}" href="javascript:void(0)"
-                                            class="img-pop-up">
+                                        <a href="{{ $executive->image }}" href="javascript:void(0)" class="img-pop-up">
                                             <div class="single-gallery-image"
-                                                style="background-image: url('{{ asset('storage/' . $executive->image) }}');">
+                                                style="background-image: url('{{ $executive->image }}');">
                                             </div>
                                         </a>
                                     @else
@@ -161,10 +160,9 @@
                             <div class="single-team mb-30">
                                 <div class="team-img">
                                     @if ($secretary->image)
-                                        <a href="{{ asset('storage/' . $secretary->image) }}" href="javascript:void(0)"
-                                            class="img-pop-up">
+                                        <a href="{{ $secretary->image }}" href="javascript:void(0)" class="img-pop-up">
                                             <div class="single-gallery-image"
-                                                style="background-image: url('{{ asset('storage/' . $secretary->image) }}');">
+                                                style="background-image: url('{{ $secretary->image }}');">
                                             </div>
                                         </a>
                                     @else

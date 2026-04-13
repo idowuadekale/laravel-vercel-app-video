@@ -130,8 +130,8 @@
                             <div class="table-row">
                                 <div class="serial" style="width: 300px;">
                                     @if ($record->image)
-                                        <img src="{{ asset('storage/' . $record->image) }}" class="rounded"
-                                            style="width: auto; height: 30px;" alt="Image">
+                                        <img src="{{ $record->image }}" class="rounded" style="width: auto; height: 30px;"
+                                            alt="Image">
                                     @else
                                         N/A
                                     @endif
