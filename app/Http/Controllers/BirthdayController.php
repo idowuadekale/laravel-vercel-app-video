@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Birthday;
 use App\Services\AuditService;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BirthdayController extends Controller
 {
@@ -31,41 +31,20 @@ class BirthdayController extends Controller
             'faculty' => 'required|string',
             'unit' => 'required|string',
             'dob' => 'required|date',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480', // 20MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
 
-        // Handle image upload + compression
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            // Compress only if >5MB
-            if ($file->getSize() > 5 * 1024 * 1024) {
-                $imgResource = null;
-
-                if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($file->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75); // 75% quality
-                }
-
-                if ($file->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($file->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6); // compression level 0-9
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                }
-            } else {
-                $path = $file->store('imageUpload', 'public');
-            }
-
-            $data['image'] = $path;
+            $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['image'] = $uploaded->getSecurePath();
         }
 
         $birthday = Birthday::create($data);
 
-        // 🔥 AUDIT TRAIL — log created fields
         AuditService::log('created', $birthday, [
             'created_fields' => $birthday->toArray(),
         ]);
@@ -86,56 +65,28 @@ class BirthdayController extends Controller
             'faculty' => 'required|string',
             'unit' => 'required|string',
             'dob' => 'required|date',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480', // 20MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
 
-        // Save original values before changes
         $old = $birthday->getOriginal();
 
-        // ---- Handle image replacement + compression ----
         if ($request->hasFile('image')) {
-            // Delete old image
-            if ($birthday->image && Storage::disk('public')->exists($birthday->image)) {
-                Storage::disk('public')->delete($birthday->image);
+            if ($birthday->image) {
+                $this->deleteFromCloudinary($birthday->image);
             }
 
-            $file = $request->file('image');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            // Compress if >5MB
-            if ($file->getSize() > 5 * 1024 * 1024) {
-                $imgResource = null;
-
-                if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($file->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75);
-                }
-
-                if ($file->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($file->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6);
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                }
-            } else {
-                $path = $file->store('imageUpload', 'public');
-            }
-
-            $data['image'] = $path;
+            $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['image'] = $uploaded->getSecurePath();
         }
 
-        // ---- Update the record ----
         $birthday->update($data);
-
-        // Detect changed fields only
         $changes = $birthday->getChanges();
-
-        // Remove timestamps from change list (optional)
         unset($changes['updated_at']);
 
-        // Log only if something actually changed
         if (!empty($changes)) {
             AuditService::log('updated', $birthday, [
                 'old' => array_intersect_key($old, $changes),
@@ -148,22 +99,28 @@ class BirthdayController extends Controller
 
     public function delete(Birthday $birthday)
     {
-        // Save original values before deletion
         $old = $birthday->toArray();
 
-        // Delete the program image if exists
-        if ($birthday->image && Storage::disk('public')->exists($birthday->image)) {
-            Storage::disk('public')->delete($birthday->image);
+        if ($birthday->image) {
+            $this->deleteFromCloudinary($birthday->image);
         }
 
-        // Delete the record
         $birthday->delete();
 
-        // Log deletion in audit trail
         AuditService::log('deleted', $birthday, [
             'deleted_fields' => $old,
         ]);
 
         return redirect()->route('birthdays.create')->with('success', 'Record deleted successfully!');
+    }
+
+    private function deleteFromCloudinary(string $url): void
+    {
+        try {
+            if (preg_match('/\/image\/upload\/(?:v\d+\/)?(.+)\.[a-z]+$/i', $url, $matches)) {
+                Cloudinary::destroy($matches[1]);
+            }
+        } catch (\Exception $e) {
+        }
     }
 }

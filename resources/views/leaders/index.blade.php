@@ -1,6 +1,6 @@
 @extends('layouts.default')
-@section('title', 'Fellowship Leaders - Lasu C&S Chapter')
-@section('TopSectionName', 'Fellowship Leaders')
+@section('title', 'Fellowship Past & Present Leaders - Lasu C&S Chapter')
+@section('TopSectionName', 'Fellowship Past & Present Leaders')
 @section('style')
     <style>
         .blog_area .alumni-card {

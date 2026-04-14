@@ -11,7 +11,6 @@ use App\Services\AuditService;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class SiteContentController extends Controller
 {
@@ -27,23 +26,16 @@ class SiteContentController extends Controller
     {
         $fields = ['facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'tiktok', 'video_link'];
 
-        // Validate dynamically
         $request->validate(
             collect($fields)->mapWithKeys(fn ($field) => [$field => 'nullable|url'])->toArray()
         );
 
-        // Prepare data dynamically
         $data = collect($fields)->mapWithKeys(fn ($field) => [$field => $request->input($field)])->toArray();
         $data['updated_by'] = Auth::id();
 
-        // Get existing record before update (for audit comparison)
         $existing = SocialMedia::first();
-
-        // Update or create record
         $social = SocialMedia::updateOrCreate([], $data);
 
-        // ---- AUDIT TRAIL ----
-        // Detect changes
         $changes = [];
         if ($existing) {
             foreach ($fields as $field) {
@@ -55,13 +47,9 @@ class SiteContentController extends Controller
                 }
             }
         } else {
-            // If first-time creation
-            $changes = [
-                'created_fields' => $social->toArray(),
-            ];
+            $changes = ['created_fields' => $social->toArray()];
         }
 
-        // Log only if changes exist
         if (!empty($changes)) {
             AuditService::log('updated', $social, $changes);
         }
@@ -74,7 +62,7 @@ class SiteContentController extends Controller
     {
         $landing = LandingPage::first();
 
-        return view('admin.landing.edit', data: compact('landing'));
+        return view('admin.landing.edit', compact('landing'));
     }
 
     public function updateLanding(Request $request)
@@ -84,7 +72,7 @@ class SiteContentController extends Controller
             'welcome_bio' => 'nullable|string|max:255',
             'about_heading' => 'nullable|string|max:255',
             'about_info' => 'nullable|string',
-            'about_img' => 'nullable|image|max:20480', // 20MB
+            'about_img' => 'nullable|image|max:20480',
             'phone' => 'nullable|string|max:20|regex:/^[0-9+\-\(\) ]+$/',
             'email' => 'required|string|email|max:255',
             'address' => 'nullable|string|max:300',
@@ -95,47 +83,23 @@ class SiteContentController extends Controller
         $landing = LandingPage::first();
 
         if ($request->hasFile('about_img')) {
-            // Delete old image if exists
-            if ($landing && $landing->about_img && Storage::disk('public')->exists($landing->about_img)) {
-                Storage::disk('public')->delete($landing->about_img);
+            // Delete old image from Cloudinary if it's a Cloudinary URL
+            if ($landing && $landing->about_img) {
+                $this->deleteFromCloudinary($landing->about_img);
             }
 
-            $image = $request->file('about_img');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            if ($image->getSize() > 5 * 1024 * 1024) { // >5MB compress
-                $imgResource = null;
-
-                if (in_array($image->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($image->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75);
-                } elseif ($image->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($image->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6);
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                    $data['about_img'] = $path;
-                } else {
-                    $data['about_img'] = $image->store('imageUpload', 'public');
-                }
-            } else {
-                $data['about_img'] = $image->store('imageUpload', 'public');
-            }
+            $uploaded = Cloudinary::upload($request->file('about_img')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['about_img'] = $uploaded->getSecurePath();
         }
 
         if ($landing) {
-            // Save original values
             $old = $landing->getOriginal();
-
-            // Update record
             $landing->update($data);
-
-            // Detect changes
             $changes = $landing->getChanges();
-
-            // Remove updated_at from audit
             unset($changes['updated_at']);
 
             if (!empty($changes)) {
@@ -146,8 +110,6 @@ class SiteContentController extends Controller
             }
         } else {
             $landing = LandingPage::create($data);
-
-            // Log creation
             AuditService::log('created', $landing, [
                 'created_fields' => $landing->toArray(),
             ]);
@@ -165,7 +127,6 @@ class SiteContentController extends Controller
         return view('admin.team.create', ['teams' => $teams, 'teamAuth' => $teamAuth]);
     }
 
-    // ---- Store new team member ----
     public function storeTeam(Request $request)
     {
         $data = $request->validate([
@@ -173,44 +134,21 @@ class SiteContentController extends Controller
             'position' => 'required|string|max:150',
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480', // 20MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
-
         $data['updated_by'] = Auth::id();
 
-        // Handle image upload + compression
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            // Compress only if >5MB
-            if ($file->getSize() > 5 * 1024 * 1024) {
-                $imgResource = null;
-
-                if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($file->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75); // 75% quality
-                }
-
-                if ($file->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($file->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6); // compression level 0-9
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                }
-            } else {
-                $path = $file->store('imageUpload', 'public');
-            }
-
-            $data['image'] = $path;
+            $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['image'] = $uploaded->getSecurePath();
         }
 
-        // Save the record
         $team = Team::create($data);
 
-        // 🔥 AUDIT TRAIL — log created fields
         AuditService::log('created', $team, [
             'created_fields' => $team->toArray(),
         ]);
@@ -218,13 +156,11 @@ class SiteContentController extends Controller
         return back()->with('success', 'Record created successfully.');
     }
 
-    // ---- Show edit page ----
     public function editTeam(Team $team)
     {
         return view('admin.team.edit', compact('team'));
     }
 
-    // ---- Update existing team member ----
     public function updateTeam(Request $request, Team $team)
     {
         $data = $request->validate([
@@ -232,57 +168,30 @@ class SiteContentController extends Controller
             'position' => 'required|string|max:150',
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480', // 20MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
         $data['updated_by'] = Auth::id();
 
-        // Save original values before changes
         $old = $team->getOriginal();
 
-        // ---- Handle image replacement + compression ----
         if ($request->hasFile('image')) {
-            // Delete old image
-            if ($team->image && Storage::disk('public')->exists($team->image)) {
-                Storage::disk('public')->delete($team->image);
+            // Delete old image from Cloudinary
+            if ($team->image) {
+                $this->deleteFromCloudinary($team->image);
             }
 
-            $file = $request->file('image');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            // Compress if >5MB
-            if ($file->getSize() > 5 * 1024 * 1024) {
-                $imgResource = null;
-
-                if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($file->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75);
-                }
-
-                if ($file->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($file->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6);
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                }
-            } else {
-                $path = $file->store('imageUpload', 'public');
-            }
-
-            $data['image'] = $path;
+            $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['image'] = $uploaded->getSecurePath();
         }
 
-        // ---- Update the team record ----
         $team->update($data);
-
-        // Detect changed fields only
         $changes = $team->getChanges();
-
-        // Remove timestamps from change list (optional)
         unset($changes['updated_at']);
 
-        // Log only if something actually changed
         if (!empty($changes)) {
             AuditService::log('updated', $team, [
                 'old' => array_intersect_key($old, $changes),
@@ -293,21 +202,16 @@ class SiteContentController extends Controller
         return redirect()->route('team.create')->with('success', 'Record updated successfully!');
     }
 
-    // ---- Delete existing team member ----
     public function deleteTeam(Team $team)
     {
-        // Save original values before deletion
         $old = $team->toArray();
 
-        // Delete the team image if exists
-        if ($team->image && Storage::disk('public')->exists($team->image)) {
-            Storage::disk('public')->delete($team->image);
+        if ($team->image) {
+            $this->deleteFromCloudinary($team->image);
         }
 
-        // Delete the record
         $team->delete();
 
-        // Log deletion in audit trail
         AuditService::log('deleted', $team, [
             'deleted_fields' => $old,
         ]);
@@ -315,7 +219,7 @@ class SiteContentController extends Controller
         return redirect()->route('team.create')->with('success', 'Record deleted successfully!');
     }
 
-    // ---- Image Section ----
+    // ---- Gallery Images ----
     public function createImage()
     {
         $groups = Image::latest()->paginate(10);
@@ -327,40 +231,20 @@ class SiteContentController extends Controller
     public function storeImage(Request $request)
     {
         $data = $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:20480', // 20mb
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:20480',
             'short_bio' => 'nullable|string',
         ]);
-
         $data['updated_by'] = Auth::id();
-        $file = $request->file('image');
-        $path = 'imageUpload/'.uniqid().'.jpg';
 
-        // Compress if > 5MB
-        if ($file->getSize() > 5 * 1024 * 1024) {
-            $imgResource = null;
-
-            if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                $imgResource = imagecreatefromjpeg($file->getRealPath());
-                imagejpeg($imgResource, storage_path('app/public/'.$path), 75);
-            }
-
-            if ($file->extension() === 'png') {
-                $imgResource = imagecreatefrompng($file->getRealPath());
-                imagepng($imgResource, storage_path('app/public/'.$path), 6);
-            }
-
-            if ($imgResource) {
-                imagedestroy($imgResource);
-            }
-        } else {
-            $path = $file->store('imageUpload', 'public');
-        }
-
-        $data['image'] = $path;
+        $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+            'folder' => 'imageUpload',
+            'quality' => 'auto',
+            'fetch_format' => 'auto',
+        ]);
+        $data['image'] = $uploaded->getSecurePath();
 
         $image = Image::create($data);
 
-        // AUDIT TRAIL — CREATED
         AuditService::log('created', $image, [
             'created_fields' => $image->toArray(),
         ]);
@@ -376,58 +260,30 @@ class SiteContentController extends Controller
     public function updateImage(Request $request, Image $group)
     {
         $data = $request->validate([
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480', // 20mb
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480',
             'short_bio' => 'nullable|string',
         ]);
         $data['updated_by'] = Auth::id();
 
-        // Save original values before changes
         $old = $group->getOriginal();
 
-        // If new image uploaded
         if ($request->hasFile('image')) {
-            // Delete old file
-            if ($group->image && Storage::disk('public')->exists($group->image)) {
-                Storage::disk('public')->delete($group->image);
+            if ($group->image) {
+                $this->deleteFromCloudinary($group->image);
             }
 
-            $file = $request->file('image');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            // Compress if >5MB
-            if ($file->getSize() > 5 * 1024 * 1024) {
-                $imgResource = null;
-
-                if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($file->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75);
-                }
-
-                if ($file->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($file->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6);
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                }
-            } else {
-                $path = $file->store('imageUpload', 'public');
-            }
-
-            $data['image'] = $path;
+            $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['image'] = $uploaded->getSecurePath();
         }
 
-        // ---- Update the team record ----
         $group->update($data);
-
-        // Detect changed fields only
         $changes = $group->getChanges();
-
-        // Remove timestamps from change list (optional)
         unset($changes['updated_at']);
 
-        // Log only if something actually changed
         if (!empty($changes)) {
             AuditService::log('updated', $group, [
                 'old' => array_intersect_key($old, $changes),
@@ -438,21 +294,16 @@ class SiteContentController extends Controller
         return redirect()->route('images.create')->with('success', 'Record updated successfully!');
     }
 
-    // ---- Delete existing Group Image member ----
     public function deleteImage(Image $group)
     {
-        // Save original values before deletion
         $old = $group->toArray();
 
-        // Delete the Group image if exists
-        if ($group->image && Storage::disk('public')->exists($group->image)) {
-            Storage::disk('public')->delete($group->image);
+        if ($group->image) {
+            $this->deleteFromCloudinary($group->image);
         }
 
-        // Delete the record
         $group->delete();
 
-        // Log deletion in audit trail
         AuditService::log('deleted', $group, [
             'deleted_fields' => $old,
         ]);
@@ -460,7 +311,7 @@ class SiteContentController extends Controller
         return redirect()->route('images.create')->with('success', 'Record deleted successfully!');
     }
 
-    // ---- HeroImage Section ----
+    // ---- Hero Image ----
     public function createHeroImage()
     {
         $heros = HeroImage::latest()->paginate(10);
@@ -475,17 +326,14 @@ class SiteContentController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
 
-        $file = $request->file('image');
-
-        // Upload to Cloudinary (handles compression automatically)
-        $uploaded = Cloudinary::upload($file->getRealPath(), [
+        $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
             'folder' => 'imageUpload',
             'quality' => 'auto',
             'fetch_format' => 'auto',
         ]);
 
         $image = HeroImage::create([
-            'image' => $uploaded->getSecurePath(), // stores full https:// URL
+            'image' => $uploaded->getSecurePath(),
             'updated_by' => Auth::id(),
         ]);
 
@@ -498,22 +346,33 @@ class SiteContentController extends Controller
 
     public function deleteHeroImage(HeroImage $hero)
     {
-        // Save original values before deletion
         $old = $hero->toArray();
 
-        // Delete the Group image if exists
-        if ($hero->image && Storage::disk('public')->exists($hero->image)) {
-            Storage::disk('public')->delete($hero->image);
+        if ($hero->image) {
+            $this->deleteFromCloudinary($hero->image);
         }
 
-        // Delete the record
         $hero->delete();
 
-        // Log deletion in audit trail
         AuditService::log('deleted', $hero, [
             'deleted_fields' => $old,
         ]);
 
         return redirect()->route('hero.create')->with('success', 'Record deleted successfully!');
+    }
+
+    // ---- Cloudinary Delete Helper ----
+    private function deleteFromCloudinary(string $url): void
+    {
+        try {
+            // Extract public_id from Cloudinary URL
+            // URL format: https://res.cloudinary.com/cloud/image/upload/v123456/imageUpload/filename.jpg
+            $pattern = '/\/image\/upload\/(?:v\d+\/)?(.+)\.[a-z]+$/i';
+            if (preg_match($pattern, $url, $matches)) {
+                Cloudinary::destroy($matches[1]);
+            }
+        } catch (\Exception $e) {
+            // Silently fail — don't block the main operation if delete fails
+        }
     }
 }

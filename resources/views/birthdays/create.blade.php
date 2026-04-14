@@ -65,10 +65,10 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="class" class="form-label">Department</label>
+                                    <label for="department" class="form-label">Department</label>
                                     <span class="text-danger">*</span>
-                                    <input type="text" name="class" id="class" class="form-control" minlength="5"
-                                        maxlength="100" required
+                                    <input type="text" name="department" id="department" class="form-control"
+                                        minlength="5" maxlength="100" required
                                         placeholder="Enter Department (ex: Computer Science Education)">
                                 </div>
                             </div>

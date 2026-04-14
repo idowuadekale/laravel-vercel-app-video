@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Leader;
 use App\Services\AuditService;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class LeaderController extends Controller
 {
@@ -29,41 +29,20 @@ class LeaderController extends Controller
             'name' => 'required|string|max:250',
             'class' => 'required|string',
             'position' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480', // 20MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
 
-        // Handle image upload + compression
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            // Compress only if >5MB
-            if ($file->getSize() > 5 * 1024 * 1024) {
-                $imgResource = null;
-
-                if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($file->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75); // 75% quality
-                }
-
-                if ($file->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($file->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6); // compression level 0-9
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                }
-            } else {
-                $path = $file->store('imageUpload', 'public');
-            }
-
-            $data['image'] = $path;
+            $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['image'] = $uploaded->getSecurePath();
         }
 
         $leader = Leader::create($data);
 
-        // 🔥 AUDIT TRAIL — log created fields
         AuditService::log('created', $leader, [
             'created_fields' => $leader->toArray(),
         ]);
@@ -82,56 +61,28 @@ class LeaderController extends Controller
             'name' => 'required|string|max:250',
             'class' => 'required|string',
             'position' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480', // 20MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480',
         ]);
 
-        // Save original values before changes
         $old = $leader->getOriginal();
 
-        // ---- Handle image replacement + compression ----
         if ($request->hasFile('image')) {
-            // Delete old image
-            if ($leader->image && Storage::disk('public')->exists($leader->image)) {
-                Storage::disk('public')->delete($leader->image);
+            if ($leader->image) {
+                $this->deleteFromCloudinary($leader->image);
             }
 
-            $file = $request->file('image');
-            $path = 'imageUpload/'.uniqid().'.jpg';
-
-            // Compress if >5MB
-            if ($file->getSize() > 5 * 1024 * 1024) {
-                $imgResource = null;
-
-                if (in_array($file->extension(), ['jpg', 'jpeg'])) {
-                    $imgResource = imagecreatefromjpeg($file->getRealPath());
-                    imagejpeg($imgResource, storage_path('app/public/'.$path), 75);
-                }
-
-                if ($file->extension() === 'png') {
-                    $imgResource = imagecreatefrompng($file->getRealPath());
-                    imagepng($imgResource, storage_path('app/public/'.$path), 6);
-                }
-
-                if ($imgResource) {
-                    imagedestroy($imgResource);
-                }
-            } else {
-                $path = $file->store('imageUpload', 'public');
-            }
-
-            $data['image'] = $path;
+            $uploaded = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'imageUpload',
+                'quality' => 'auto',
+                'fetch_format' => 'auto',
+            ]);
+            $data['image'] = $uploaded->getSecurePath();
         }
 
-        // ---- Update the record ----
         $leader->update($data);
-
-        // Detect changed fields only
         $changes = $leader->getChanges();
-
-        // Remove timestamps from change list (optional)
         unset($changes['updated_at']);
 
-        // Log only if something actually changed
         if (!empty($changes)) {
             AuditService::log('updated', $leader, [
                 'old' => array_intersect_key($old, $changes),
@@ -144,22 +95,28 @@ class LeaderController extends Controller
 
     public function delete(Leader $leader)
     {
-        // Save original values before deletion
         $old = $leader->toArray();
 
-        // Delete the program image if exists
-        if ($leader->image && Storage::disk('public')->exists($leader->image)) {
-            Storage::disk('public')->delete($leader->image);
+        if ($leader->image) {
+            $this->deleteFromCloudinary($leader->image);
         }
 
-        // Delete the record
         $leader->delete();
 
-        // Log deletion in audit trail
         AuditService::log('deleted', $leader, [
             'deleted_fields' => $old,
         ]);
 
         return redirect()->route('leaders.create')->with('success', 'Record deleted successfully!');
+    }
+
+    private function deleteFromCloudinary(string $url): void
+    {
+        try {
+            if (preg_match('/\/image\/upload\/(?:v\d+\/)?(.+)\.[a-z]+$/i', $url, $matches)) {
+                Cloudinary::destroy($matches[1]);
+            }
+        } catch (\Exception $e) {
+        }
     }
 }
